@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/03 03:12:39 by rfulop            #+#    #+#             */
-/*   Updated: 2017/10/18 23:05:58 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/10/19 04:59:42 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *concat_opcode(char *ocp, int arg)
   if (!ocp)
   {
     if (!(ocp = ft_strnew(0)))
-      error("Error : Malloc failed");
+      asm_error(MALLOC_ERR, NULL);
   }
     if (arg == REG_CODE)
       ft_strcat(ocp, "01");
@@ -146,15 +146,18 @@ void  write_dir(t_asm_env *env, char *line, int i)
   short dir2o;
   char  *str;
   char *label;
+  int nb;
 
   a = 0;
   line++;
-  if (line[a] != LABEL_CHAR)
-  {
-    while (line[a] && ft_isdigit(line[a]))
-      ++a;
-    str = ft_strndup(line, a);
-  }
+  nb = ft_atoi(line);
+   if (line[a] != LABEL_CHAR)
+   {
+     while (line[a] && ft_isdigit(line[a]))
+       ++a;
+     str = ft_strndup(line, a);
+   }
+
   if (i == 1 || i == 2 || i == 6 || i == 7 || i == 8 || i == 14)
   {
     if (line[a] == LABEL_CHAR)
@@ -163,7 +166,7 @@ void  write_dir(t_asm_env *env, char *line, int i)
       dir4o = dist_label(env, label);
     }
     else
-      dir4o = ft_atoi(str);
+      dir4o = nb;
     dir4o = reverse_int(dir4o);
     write(env->fd, &dir4o, 4);
   }
@@ -175,7 +178,7 @@ void  write_dir(t_asm_env *env, char *line, int i)
       dir2o = dist_label(env, label);
     }
     else
-      dir2o = ft_atoi(str);
+      dir2o = nb;
     dir2o = reverse_short(dir2o);
     write(env->fd, &dir2o, 2);
   }
@@ -392,7 +395,7 @@ void  create_file(t_asm_env *env, char *str)
   name = ft_strnew(len + 2);
   name = ft_strcpy(name, tmp);
   name = ft_strcat(name, ".cor");
-  fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+  fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
   env->fd = fd;
 }
 
@@ -403,7 +406,9 @@ int main (int argc, char **argv)
   char  *line;
   t_asm_env env;
 
-  fd = open(argv[1], O_RDONLY);
+  if ((fd = open(argv[1], O_RDONLY)) == -1)
+    asm_error(SOURCE_ERR, argv[1]);
+  printf("fd = %d\n", fd);
   line = NULL;
   env.bytes = 1;
   while (get_next_line(fd, &line))
@@ -425,5 +430,7 @@ int main (int argc, char **argv)
     parse(&env, line, 1);
     ft_memdel((void*)&line);
   }
+  argv[1][ft_strlen(argv[1]) - 2] = '\0';
+  ft_printf("Writting output program to %s.cor\n", argv[1]);
   return (0);
 }

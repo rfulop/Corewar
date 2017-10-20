@@ -6,13 +6,13 @@
 #    By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/26 22:48:41 by rfulop            #+#    #+#              #
-#    Updated: 2017/10/17 18:26:10 by rfulop           ###   ########.fr        #
+#    Updated: 2017/10/19 23:23:57 by lchety           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: all, clean, fclean, re
 
 CC = clang
-CFLAGS = -g -Wbraced-scalar-init
+CFLAGS = -g
 VM_NAME = corewar
 ASM_NAME = asm
 
@@ -102,15 +102,14 @@ clean:
 	@rm -rf $(OBJ_PATH)
 	@rm -rf $(OBJ_PATH_VM)
 	@rm -rf $(OBJ_PATH_ASM)
+	@make -C $(LIB_PATH) fclean
 	@echo "\033[31mObjects files \033[1;31m$(OBJ_FILES_VM)\033[1;0m\033[31m removed.\033[0m"
 	@echo "\033[31mObjects files \033[1;31m$(OBJ_FILES_ASM)\033[1;0m\033[31m removed.\033[0m"
-	@make -C $(LIB_PATH) clean
 
 fclean: clean
 	@rm -f $(VM_NAME)
 	@rm -f $(ASM_NAME)
-	@make -C $(LIB_PATH) fclean
-	@echo "\033[31mLib \033[1;31m$(VM_NAME)\033[1;0m\033[31m removed.\033[0m"
-	@echo "\033[31mLib \033[1;31m$(ASM_NAME)\033[1;0m\033[31m removed.\033[0m"
+	@echo "\033[31mBinary \033[1;31m$(VM_NAME)\033[1;0m\033[31m removed.\033[0m"
+	@echo "\033[31mBinary \033[1;31m$(ASM_NAME)\033[1;0m\033[31m removed.\033[0m"
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/03 03:13:29 by rfulop            #+#    #+#             */
-/*   Updated: 2017/10/18 23:29:45 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/10/19 00:06:45 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void  write_comment(t_asm_env *env, char *line)
     a++;
     ++test;
   }
-  printf("test = %d a = %d\n", test, a);
+//  printf("test = %d a = %d\n", test, a);
 }
 
 
@@ -79,7 +79,7 @@ void  write_name(t_asm_env *env, char *line)
     ft_putchar_fd(line[tmp + a], env->fd);
     ++a;
   }
-  printf("nb = %d\n", env->size);
+  //printf("nb = %d\n", env->size);
 
   // DONT UNDERSTAND WHY 4 BYTES
   while(a != PROG_NAME_LENGTH + 4)

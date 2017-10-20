@@ -6,7 +6,7 @@
 /*   By: lchety <lchety@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:05:43 by lchety            #+#    #+#             */
-/*   Updated: 2017/10/18 23:05:29 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/10/19 22:02:18 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include "libft.h"
-
+#include "ft_printf.h"
 //-------------------------
 
 #define IND_SIZE				2
@@ -279,6 +279,9 @@ void		debug_display_proc(t_vm *vm);
  ** ------- ASM -----------
  */
 
+#define SOURCE_ERR 1
+#define MALLOC_ERR 2
+
 typedef struct s_asm_env
 {
 	struct s_tab_labs *labs;
@@ -294,13 +297,18 @@ typedef struct s_tab_labs
 	struct s_tab_labs  *next;
 }                   t_tab_labs;
 
+typedef struct s_dasm_env
+{
+	int								fd;
+}
+
 void print_labs_lst(t_tab_labs *lst);
 void create_label(t_tab_labs **labels, int bytes, char *line);
 
 void write_header(t_asm_env *env, char *line, int printmode);
 
 void	init_vm(t_vm *vm);
-void	error(char *str);
+void	asm_error(int err, char *str);
 
 /*-------DEBUG-------*/
 void	show_mem(t_vm *vm);
