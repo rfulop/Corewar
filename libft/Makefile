@@ -6,7 +6,7 @@
 #    By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/29 03:17:34 by rfulop            #+#    #+#              #
-#    Updated: 2017/10/19 04:12:37 by rfulop           ###   ########.fr        #
+#    Updated: 2017/12/07 16:16:54 by rfulop           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,6 +117,7 @@ SRC_NAME = ft_memset.c \
 			ft_intfill.c \
 			ft_strnewchr.c \
 			ft_str_isdigit.c \
+            ft_strrev.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 
@@ -139,7 +140,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@echo "\033[34mCompilation of \033[36m$(notdir $<)\033[34m done.\033[0m"
 
 clean:
-	@rmdir $(OBJ_PATH) 2> /dev/null || true
+	@rm -rf $(OBJ_PATH) 2> /dev/null || true
 	@rm -fv $(OBJ)
 	@echo "\033[31mObjects files \033[1;31m$(OBJ_NAME)\033[1;0m\033[31m removed.\033[0m"
 

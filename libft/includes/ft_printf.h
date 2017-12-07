@@ -6,7 +6,7 @@
 /*   By: rfulop <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 23:18:18 by rfulop            #+#    #+#             */
-/*   Updated: 2017/04/29 03:20:34 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/12/07 16:02:50 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int					ft_conv_type(va_list ap, t_opt *opt, char c);
 void				ft_c_unicode(va_list ap, t_opt *opt, char c, wchar_t x);
 int					ft_count_byt(wchar_t a);
 void				ft_s_unicode(va_list ap, t_opt *opt);
-void				ft_concat_unicode_s(va_list ap, t_opt *opt, wchar_t *str, int len);
+void				ft_concat_unicode_s(va_list ap, t_opt *opt, wchar_t *str,
+					int len);
 
 /*
 ** Width functions

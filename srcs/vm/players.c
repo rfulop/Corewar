@@ -6,7 +6,7 @@
 /*   By: lchety <lchety@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 17:16:25 by lchety            #+#    #+#             */
-/*   Updated: 2017/10/17 01:20:20 by lchety           ###   ########.fr       */
+/*   Updated: 2017/12/06 14:16:31 by lchety           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,56 +31,41 @@ void	reset_life_signal(t_vm *vm)
 	}
 }
 
-int		total_lives(t_vm *vm)
+void	new_player(t_vm *vm, int nb, char *str)
 {
-	int	i;
-	int	sum;
+	vm->player[nb].active = 1;
+	vm->player[nb].file_name = str;
+}
 
-	i = 0;
-	sum = 0;
+void	reset_live(t_vm *vm)
+{
+	int				i;
+
+	i = 1;
 	while (i <= vm->nb_player)
 	{
-		sum += vm->player[i].life_signal;
-		i++;
+		vm->player[i].last_period = vm->player[i].tot;
+		vm->player[i].life_signal = 0;
+		++i;
 	}
-	return (sum);
 }
 
-void	reduce_ctd(t_vm *vm)
-{
-	// printf("BORDEL  %d\n", total_lives(vm));
-	if (total_lives(vm) >= NBR_LIVE || vm->ctd_check == MAX_CHECKS)
-	{
-		// printf("BORDEL\n");
-		vm->ctd -= CYCLE_DELTA;
-		vm->ctd_check = 0;
-	}
-	else
-		vm->ctd_check++;
-}
-
-int		all_died(t_vm *vm)
+void	create_players(t_vm *vm)
 {
 	int i;
-	int cnt;
+	int j;
 
-	i = 0;
-	cnt = 0;
-	if (vm->cycle == vm->next_ctd)
+	i = 1;
+	j = 0;
+	ft_printf("Introducing contestants...\n");
+	while (i <= MAX_PLAYERS)
 	{
-		reduce_ctd(vm);
-		vm->next_ctd += vm->ctd;
-		undertaker(vm);
-		vm->last_one = get_survivor(vm);
-		reset_life_signal(vm);
-		while (i <= MAX_PLAYERS && cnt == 0)
+		if (vm->player[i].active)
 		{
-			if (vm->player[i].active)
-				cnt++;
-			i++;
+			write_player(vm, i, j);
+			j++;
 		}
-		if (!cnt)
-			return (1);
+		i++;
 	}
-	return (0);
+	init_process(vm);
 }

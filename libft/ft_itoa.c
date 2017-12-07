@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/24 19:56:07 by rfulop            #+#    #+#             */
-/*   Updated: 2017/01/17 18:26:40 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/12/05 09:51:25 by amacieje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ char			*ft_itoa(int n)
 		n = n * -1;
 	}
 	a = ft_size(n);
-	if (!(res = malloc(sizeof(char) * (a + sign + 1))))
+	if (!(res = (char*)malloc(sizeof(char) * (a + sign + 1))))
 		return (NULL);
-	ft_strclr(res);
+	res[a + sign] = '\0';
 	if (sign)
 		res[0] = '-';
 	while (a > 0)

@@ -6,18 +6,73 @@
 /*   By: lchety <lchety@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 12:07:36 by lchety            #+#    #+#             */
-/*   Updated: 2017/10/07 19:55:40 by lchety           ###   ########.fr       */
+/*   Updated: 2017/12/04 22:26:53 by lchety           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-void	init_ncurses(WINDOW **w)
+void	init_color_pair(void)
 {
-	*w = initscr();
-	start_color();			/* Start color 			*/
-	cbreak(); //getch() no block
-	nodelay(*w, TRUE);
+	init_pair(NC_P_GREY, NC_C_GREY, NC_C_BLACK);
+	init_pair(NC_P_WHITE, NC_C_WHITE, NC_C_BLACK);
+	init_pair(NC_P_GREEN, NC_C_GREEN, NC_C_BLACK);
+	init_pair(NC_P_BLUE, NC_C_BLUE, NC_C_BLACK);
+	init_pair(NC_P_RED, NC_C_RED, NC_C_BLACK);
+	init_pair(NC_P_CYAN, NC_C_CYAN, NC_C_BLACK);
+	init_pair(NC_P_GREEN_BLING, NC_C_GREEN_BLING, NC_C_BLACK);
+	init_pair(NC_P_BLUE_BLING, NC_C_BLUE_BLING, NC_C_BLACK);
+	init_pair(NC_P_RED_BLING, NC_C_RED_BLING, NC_C_BLACK);
+	init_pair(NC_P_CYAN_BLING, NC_C_CYAN_BLING, NC_C_BLACK);
+	init_pair(NC_P_GREEN_PC, NC_C_BLACK, NC_C_GREEN);
+	init_pair(NC_P_BLUE_PC, NC_C_BLACK, NC_C_BLUE);
+	init_pair(NC_P_RED_PC, NC_C_BLACK, NC_C_RED);
+	init_pair(NC_P_CYAN_PC, NC_C_BLACK, NC_C_CYAN);
+	init_pair(NC_P_GREEN_LIFE, NC_C_WHITE, NC_C_GREEN);
+	init_pair(NC_P_BLUE_LIFE, NC_C_WHITE, NC_C_BLUE);
+	init_pair(NC_P_RED_LIFE, NC_C_WHITE, NC_C_RED);
+	init_pair(NC_P_CYAN_LIFE, NC_C_WHITE, NC_C_CYAN);
+	init_pair(NC_P_BLACK_B, NC_C_BLACK, NC_C_BLACK);
+	init_pair(NC_P_WHITE_B, NC_C_WHITE, NC_C_WHITE);
+}
+
+void	colors_init(void)
+{
+	init_color(NC_C_WHITE, 800, 800, 800);
+	init_color(NC_C_BLACK, 0, 0, 0);
+	init_color(NC_C_GREY, 350, 350, 350);
+	init_color(NC_C_GREEN, 410, 750, 300);
+	init_color(NC_C_BLUE, 200, 300, 600);
+	init_color(NC_C_RED, 700, 150, 200);
+	init_color(NC_C_CYAN, 100, 500, 600);
+	init_color(NC_C_GREEN_BLING, 600, 1000, 500);
+	init_color(NC_C_BLUE_BLING, 400, 600, 1000);
+	init_color(NC_C_RED_BLING, 1000, 300, 400);
+	init_color(NC_C_CYAN_BLING, 300, 1000, 1000);
+	init_color_pair();
+}
+
+void	border_ncurses(void)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	display_linux();
+	attron(COLOR_PAIR(NC_P_WHITE_B));
+	while (++i < MEM_SIZE / 64 + 5)
+	{
+		j = -1;
+		while (++j < 3 * (MEM_SIZE / 64) + 72)
+		{
+			if (i == 1 || j == 0 || i == MEM_SIZE / 64 + 4
+					|| j == 3 * (MEM_SIZE / 64) + 5 ||
+					j == 3 * (MEM_SIZE / 64) + 70
+					|| j == 3 * (MEM_SIZE / 64) + 71 || j == 1)
+				mvprintw(i, j, " ");
+		}
+	}
 }
 
 void	call_ncurses(t_vm *vm)
@@ -25,89 +80,32 @@ void	call_ncurses(t_vm *vm)
 	int i;
 	int ret;
 
-	i = 0;
+	i = -1;
 	ret = 0;
-
-	init_color(35, 350, 350, 350);//basic grey
-	init_pair(15, 35, COLOR_BLACK);//basic
-
-	init_pair(20, COLOR_GREEN, COLOR_BLACK);//player_1
-
-	init_color(36, 150, 1000, 150);//fluo_green
-	init_color(38, 500, 1000, 500);//blingbling_green
-	init_pair(21, COLOR_GREEN, 36);//player_1_highlight
-	init_pair(24, 38, COLOR_BLACK);//player_1_blingbling
-
-	init_pair(22, COLOR_BLUE, COLOR_BLACK);//player_2
-	init_color(COLOR_BLUE, 200, 200, 800);//blue change
-
-	init_color(37, 400, 400, 1000);//fluo_blue
-	init_pair(23, COLOR_BLUE, 37);//player_2_highlight
-	init_pair(25, 37, COLOR_BLACK);//player_2_blingbling
-
-	init_pair(26, COLOR_GREEN, COLOR_RED);//life highlight
-
-	move(0,0);
-	while (i < MEM_SIZE)
-	{
-		// printf("FOOOOOO\n");
-		attron(COLOR_PAIR(15));
-		move(i / 64, (i % 64) * 3);
-		if ((is_pc(vm, i)))
-		{
-			if (vm->ram[i].num == -1)
-				attron(COLOR_PAIR(21));
-			else if (vm->ram[i].num == -2)
-				attron(COLOR_PAIR(23));
-			attron(A_STANDOUT);
-		}
-		else if (vm->ram[i].num == -1)
-		{
-			attron(COLOR_PAIR(20));
-		}
-		else if (vm->ram[i].num == -2)
-		{
-			attron(COLOR_PAIR(22));
-		}
-
-		if (vm->ram[i].blingbling)
-		{
-			attron(A_BOLD);
-			if (vm->ram[i].num == -1)
-				attron(COLOR_PAIR(24));
-			if (vm->ram[i].num == -2)
-				attron(COLOR_PAIR(25));
-			vm->ram[i].blingbling--;
-		}
-
-		if (vm->ram[i].live)
-		{
-			attron(COLOR_PAIR(26));
-			vm->ram[i].live--;
-		}
-
-		printw("%02x", (unsigned char)vm->ram[i].mem);
-		attroff(A_STANDOUT);
-		attroff(A_BOLD);
-		attroff(COLOR_PAIR(35));
-		i++;
-	}
-	move(5, 200);
-	printw("Delay : %d", vm->delay);
-	move(10, 200);
-	printw("Cycles : %d", vm->cycle);
-	move(12, 200);
-	printw("Keycode : %d", vm->keycode);
-	move(14, 200);
-	printw("Proc Nb : %d", count_proc(vm));
-	move(20, 200);
-	printw("Cycle to die : %d", vm->ctd);
-	move(22, 200);
-	printw("Live P1 : %08d", vm->player[1].life_signal);
-	move(26, 210);
-
-	// debug_display_proc(vm);
-
+	if (!vm->ncurses)
+		return ;
+	if (vm->boost && !vm->winner && (vm->cycle % BOOST_CYCLES))
+		return ;
+	display_mem(vm);
+	display_menu(vm);
+	controller(vm);
+	usleep(vm->delay);
 	refresh();
+}
 
+void	init_ncurses(WINDOW **w)
+{
+	*w = initscr();
+	if (has_colors() == FALSE)
+	{
+		ft_printf("Your terminal does not support colors.\n");
+		endwin();
+		exit(1);
+	}
+	start_color();
+	colors_init();
+	border_ncurses();
+	cbreak();
+	nodelay(*w, TRUE);
+	curs_set(0);
 }

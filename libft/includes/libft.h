@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 14:16:37 by rfulop            #+#    #+#             */
-/*   Updated: 2017/10/17 13:17:34 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/11/07 16:16:50 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,6 @@ int					ft_findstr(char *s1, char *s2);
 void				ft_intfill(int *tab, int size);
 char				*ft_strnewchr(char *str, char c);
 int					ft_str_isdigit(char *str);
+char				*ft_strrev(char *str);
+
 #endif

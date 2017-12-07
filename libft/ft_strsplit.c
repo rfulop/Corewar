@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/02 15:01:56 by rfulop            #+#    #+#             */
-/*   Updated: 2017/01/17 18:27:25 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/12/07 16:04:48 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,23 +109,23 @@ char			**ft_strsplit(const char *s, char c)
 	int		i;
 
 	tab = NULL;
-	if (s)
+	if (!s)
+		return (tab);
+	i = 0;
+	words = ft_count_words((char *)s, c);
+	if (!(tab = (char**)malloc(sizeof(tab) * words + 1)))
+		return (NULL);
+	if (!(letters = (int*)malloc(sizeof(letters) * words)))
+		return (NULL);
+	ft_count_letters((char *)s, letters, c);
+	letters[words] = '\0';
+	while (i != words)
 	{
-		i = 0;
-		words = ft_count_words((char *)s, c);
-		if (!(tab = (char**)malloc(sizeof(tab) * words + 1)))
+		if (!(tab[i] = (char*)malloc(sizeof(char*) * letters[i] + 1)))
 			return (NULL);
-		if (!(letters = (int*)malloc(sizeof(letters) * words)))
-			return (NULL);
-		ft_count_letters((char *)s, letters, c);
-		letters[words] = '\0';
-		while (i != words)
-		{
-			tab[i] = (char*)malloc(sizeof(char*) * letters[i] + 1);
-			++i;
-		}
-		tab[words] = 0;
-		ft_add_char((char *)s, tab, c);
+		++i;
 	}
+	tab[words] = 0;
+	ft_add_char((char *)s, tab, c);
 	return (tab);
 }

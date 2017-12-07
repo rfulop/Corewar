@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/02 22:30:49 by rfulop            #+#    #+#             */
-/*   Updated: 2017/03/16 02:30:33 by rfulop           ###   ########.fr       */
+/*   Updated: 2017/11/07 12:55:49 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char						*ft_nb_to_char(unsigned long long int nb,
 		tmp = tmp / ft_strlen(base_to);
 		++len;
 	}
-	if (!(result = (char*)malloc(sizeof(char*) * len + 1)))
+	if (!(result = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
 	result[len] = '\0';
 	len--;
@@ -77,7 +77,7 @@ char							*ft_convert_base(char *nbr, char *base_from,
 	nb = ft_char_to_int(nbr, base_from);
 	if (!nb)
 	{
-		if (!(result = (char*)malloc(sizeof(char*) + 1)))
+		if (!(result = (char*)malloc(sizeof(char) + 1)))
 			return (NULL);
 		result[0] = base_to[0];
 		result[1] = '\0';
