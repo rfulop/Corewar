@@ -1,4 +1,4 @@
-#Corewar
+# Corewar
 A virtual “arena” in which programs will fight against one another (the “Champions”) and an assembler to those Champions as well as a Champion to show the world that you can create life from coffee.
 
 ## Project Overview
